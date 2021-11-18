@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 
 use FastRoute\RouteCollector;
 use Zorachka\Framework\Http\Application;
+use Zorachka\Framework\Http\HttpApplication;
 use Zorachka\Framework\Http\Middleware\MiddlewaresProvider;
 use Zorachka\Framework\Http\Router\Route;
 use Zorachka\Framework\Http\Router\RouteGroup;
