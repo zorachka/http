@@ -1,0 +1,47 @@
+{
+    "name": "zorachka/http",
+    "description": "Zorachka Http",
+    "keywords": [
+        "zorachka",
+        "http",
+        "application"
+    ],
+    "homepage": "https://github.com/zorachka/http",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Siarhei Bautrukevich",
+            "email": "hello@bautrukevich.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laminas/laminas-diactoros": "^2.8",
+        "middlewares/fast-route": "^2.0",
+        "middlewares/request-handler": "^2.0",
+        "narrowspark/http-emitter": "^2.0",
+        "relay/relay": "^2.1"
+    },
+    "suggest": {
+        "zorachka/container": "For ServiceProvider interface"s
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zorachka\\Framework\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zorachka\\Framework\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
