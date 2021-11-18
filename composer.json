@@ -24,7 +24,7 @@
         "relay/relay": "^2.1"
     },
     "suggest": {
-        "zorachka/container": "For ServiceProvider interface"s
+        "zorachka/container": "For ServiceProvider interface"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"
