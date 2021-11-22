@@ -6,21 +6,17 @@ namespace Zorachka\Framework\Http\Providers;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
-
 use FastRoute\RouteCollector;
+use function FastRoute\simpleDispatcher;
+use Middlewares\FastRoute;
+use Middlewares\RequestHandler;
+use Relay\Relay;
+use Zorachka\Framework\Container\ServiceProvider;
 use Zorachka\Framework\Http\Application;
 use Zorachka\Framework\Http\HttpApplication;
 use Zorachka\Framework\Http\Middleware\MiddlewaresServiceProvider;
 use Zorachka\Framework\Http\Router\RouterConfig;
-use function FastRoute\simpleDispatcher;
-
-use Middlewares\FastRoute;
-use Middlewares\RequestHandler;
-
 use Zorachka\Framework\Http\Emitter\Emitter;
-use Zorachka\Framework\Container\ServiceProvider;
-
-use Relay\Relay;
 
 final class HttpApplicationServiceProvider implements ServiceProvider
 {
