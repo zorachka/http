@@ -6,6 +6,7 @@ namespace Zorachka\Framework\Http\Router;
 
 use InvalidArgumentException;
 use Psr\Http\Server\RequestHandlerInterface;
+use Webmozart\Assert\Assert;
 
 final class Route
 {
@@ -16,18 +17,26 @@ final class Route
     private const DELETE = 'DELETE';
 
     private string $httpMethod;
-    private string $route;
+    private string $path;
     private string $handler;
 
     /**
      * @param string $httpMethod
-     * @param string $route
+     * @param string $path
      * @param class-string<RequestHandlerInterface> $handler
      */
-    private function __construct(string $httpMethod, string $route, string $handler)
+    private function __construct(string $httpMethod, string $path, string $handler)
     {
-        $this->httpMethod = $httpMethod;
-        $this->route = $route;
+        Assert::notEmpty($httpMethod);
+        Assert::inArray($httpMethod, [
+            self::GET,
+            self::POST,
+            self::PUT,
+            self::PATCH,
+            self::DELETE,
+        ]);
+        Assert::notEmpty($path);
+        Assert::notEmpty($handler);
         if (!is_a($handler, RequestHandlerInterface::class, true)) {
             throw new InvalidArgumentException(sprintf(
                 'Class "%s" was expected to implement "%s"',
@@ -35,6 +44,8 @@ final class Route
                 RequestHandlerInterface::class
             ));
         }
+        $this->httpMethod = $httpMethod;
+        $this->path = $path;
         $this->handler = $handler;
     }
 
@@ -91,7 +102,7 @@ final class Route
     /**
      * @return string
      */
-    public function getHttpMethod(): string
+    public function httpMethod(): string
     {
         return $this->httpMethod;
     }
@@ -99,15 +110,15 @@ final class Route
     /**
      * @return string
      */
-    public function getRoute(): string
+    public function path(): string
     {
-        return $this->route;
+        return $this->path;
     }
 
     /**
      * @return class-string
      */
-    public function getHandler(): string
+    public function handler(): string
     {
         return $this->handler;
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zorachka\Framework\Http\Router;
 
+use Webmozart\Assert\Assert;
+
 final class RouteGroup
 {
     private string $prefix;
@@ -18,6 +20,9 @@ final class RouteGroup
      */
     private function __construct(string $prefix, array $routes)
     {
+        Assert::notEmpty($prefix);
+        Assert::allIsInstanceOf($routes, Route::class);
+
         $this->prefix = $prefix;
         $this->routes = $routes;
     }
@@ -30,7 +35,7 @@ final class RouteGroup
     /**
      * @return string
      */
-    public function getPrefix(): string
+    public function prefix(): string
     {
         return $this->prefix;
     }
@@ -38,7 +43,7 @@ final class RouteGroup
     /**
      * @return Route[]
      */
-    public function getRoutes(): array
+    public function routes(): array
     {
         return $this->routes;
     }
