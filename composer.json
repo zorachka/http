@@ -21,12 +21,11 @@
         "middlewares/fast-route": "^2.0",
         "middlewares/request-handler": "^2.0",
         "narrowspark/http-emitter": "^2.0",
-        "relay/relay": "^2.1"
-    },
-    "suggest": {
-        "zorachka/container": "For ServiceProvider interface"
+        "relay/relay": "^2.1",
+        "zorachka/container": "^1.0"
     },
     "require-dev": {
+        "pestphp/pest": "^1.21",
         "roave/security-advisories": "dev-latest"
     },
     "autoload": {
