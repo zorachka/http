@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Psr\Http\Server\RequestHandlerInterface;
 use Webmozart\Assert\Assert;
 
-final class Route
+final class Route implements RouteInterface
 {
     private const GET = 'GET';
     private const POST = 'POST';
@@ -50,9 +50,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function get(string $route, string $handler): self
     {
@@ -60,9 +58,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function post(string $route, string $handler): self
     {
@@ -70,9 +66,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function put(string $route, string $handler): self
     {
@@ -80,9 +74,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function patch(string $route, string $handler): self
     {
@@ -90,9 +82,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function delete(string $route, string $handler): self
     {
@@ -100,7 +90,7 @@ final class Route
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function httpMethod(): string
     {
@@ -108,7 +98,7 @@ final class Route
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function path(): string
     {
@@ -116,7 +106,7 @@ final class Route
     }
 
     /**
-     * @return class-string
+     * @inheritDoc
      */
     public function handler(): string
     {

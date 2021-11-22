@@ -9,29 +9,38 @@ use Webmozart\Assert\Assert;
 final class RouterConfig
 {
     /**
-     * @var Route[]
+     * @var RouteInterface[]
      */
     private array $routes;
     /**
-     * @var RouteGroup[]
+     * @var RouteGroupInterface[]
      */
     private array $groups;
 
     private function __construct(array $routes, array $groups)
     {
-        Assert::allIsInstanceOf($routes, Route::class);
-        Assert::allIsInstanceOf($groups, RouteGroup::class);
+        Assert::allIsInstanceOf($routes, RouteInterface::class);
+        Assert::allIsInstanceOf($groups, RouteGroupInterface::class);
 
         $this->routes = $routes;
         $this->groups = $groups;
     }
 
+    /**
+     * @param array $routes
+     * @param array $groups
+     * @return static
+     */
     public static function withDefaults(array $routes = [], array $groups = []): self
     {
         return new self($routes, $groups);
     }
 
-    public function addRoute(Route $route): self
+    /**
+     * @param RouteInterface $route
+     * @return $this
+     */
+    public function addRoute(RouteInterface $route): self
     {
         $new = clone $this;
         $new->routes[] = $route;
@@ -39,7 +48,11 @@ final class RouterConfig
         return $new;
     }
 
-    public function addGroup(RouteGroup $routeGroup): self
+    /**
+     * @param RouteGroupInterface $routeGroup
+     * @return $this
+     */
+    public function addGroup(RouteGroupInterface $routeGroup): self
     {
         $new = clone $this;
         $new->groups[] = $routeGroup;
@@ -48,7 +61,7 @@ final class RouterConfig
     }
 
     /**
-     * @return Route[]
+     * @return RouteInterface[]
      */
     public function routes(): array
     {
@@ -56,7 +69,7 @@ final class RouterConfig
     }
 
     /**
-     * @return RouteGroup[]
+     * @return RouteGroupInterface[]
      */
     public function groups(): array
     {

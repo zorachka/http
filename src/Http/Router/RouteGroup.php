@@ -6,34 +6,38 @@ namespace Zorachka\Framework\Http\Router;
 
 use Webmozart\Assert\Assert;
 
-final class RouteGroup
+final class RouteGroup implements RouteGroupInterface
 {
     private string $prefix;
     /**
-     * @var Route[]
+     * @var RouteInterface[]
      */
     private array $routes;
 
     /**
      * @param string $prefix
-     * @param Route[] $routes
+     * @param RouteInterface[] $routes
      */
     private function __construct(string $prefix, array $routes)
     {
         Assert::notEmpty($prefix);
-        Assert::allIsInstanceOf($routes, Route::class);
+        Assert::notEmpty($routes);
+        Assert::allIsInstanceOf($routes, RouteInterface::class);
 
         $this->prefix = $prefix;
         $this->routes = $routes;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function with(string $prefix, array $routes): self
     {
         return new self($prefix, $routes);
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function prefix(): string
     {
@@ -41,7 +45,7 @@ final class RouteGroup
     }
 
     /**
-     * @return Route[]
+     * @inheritDoc
      */
     public function routes(): array
     {
