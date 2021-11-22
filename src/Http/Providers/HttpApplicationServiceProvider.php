@@ -6,23 +6,17 @@ namespace Zorachka\Framework\Http\Providers;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
-
 use FastRoute\RouteCollector;
-use Zorachka\Framework\Http\Application;
-use Zorachka\Framework\Http\HttpApplication;
-use Zorachka\Framework\Http\Middleware\MiddlewaresProvider;
-use Zorachka\Framework\Http\Router\Route;
-use Zorachka\Framework\Http\Router\RouteGroup;
-use Zorachka\Framework\Http\Router\RoutesProvider;
 use function FastRoute\simpleDispatcher;
-
 use Middlewares\FastRoute;
 use Middlewares\RequestHandler;
-
-use Zorachka\Framework\Http\Emitter\Emitter;
-use Zorachka\Framework\Container\ServiceProvider;
-
 use Relay\Relay;
+use Zorachka\Framework\Container\ServiceProvider;
+use Zorachka\Framework\Http\Application;
+use Zorachka\Framework\Http\HttpApplication;
+use Zorachka\Framework\Http\Middleware\MiddlewaresServiceProvider;
+use Zorachka\Framework\Http\Router\RouterConfig;
+use Zorachka\Framework\Http\Emitter\Emitter;
 
 final class HttpApplicationServiceProvider implements ServiceProvider
 {
@@ -34,39 +28,40 @@ final class HttpApplicationServiceProvider implements ServiceProvider
         return [
             Application::class => static function(ContainerInterface $container) {
                 $routes = simpleDispatcher(function (RouteCollector $collector) use ($container) {
-                    /** @var RoutesProvider $routesProvider */
-                    $routesProvider = $container->get(RoutesProvider::class);
-                    $routes = $routesProvider->getRoutesAndGroups();
+                    /** @var RouterConfig $routerConfig */
+                    $routerConfig = $container->get(RouterConfig::class);
+                    $routes = $routerConfig->routes();
 
                     foreach ($routes as $route) {
-                        if ($route instanceof Route) {
-                            $collector->addRoute(
-                                $route->getHttpMethod(),
-                                $route->getRoute(),
-                                $route->getHandler(),
-                            );
-                        } else if ($route instanceof RouteGroup) {
-                            $prefix = $route->getPrefix();
-                            $routes = $route->getRoutes();
+                        $collector->addRoute(
+                            $route->httpMethod(),
+                            $route->path(),
+                            $route->handler(),
+                        );
+                    }
 
-                            $collector->addGroup(
-                                $prefix,
-                                function (RouteCollector $collector) use ($routes) {
-                                    foreach ($routes as $route) {
-                                        $collector->addRoute(
-                                            $route->getHttpMethod(),
-                                            $route->getRoute(),
-                                            $route->getHandler(),
-                                        );
-                                    }
+                    $groups = $routerConfig->groups();
+                    foreach ($groups as $group) {
+                        $prefix = $group->prefix();
+                        $routes = $group->routes();
+
+                        $collector->addGroup(
+                            $prefix,
+                            function (RouteCollector $collector) use ($routes) {
+                                foreach ($routes as $route) {
+                                    $collector->addRoute(
+                                        $route->httpMethod(),
+                                        $route->path(),
+                                        $route->handler(),
+                                    );
                                 }
-                            );
-                        }
+                            }
+                        );
                     }
                 });
 
-                /** @var MiddlewaresProvider $middlewaresProvider */
-                $middlewaresProvider = $container->get(MiddlewaresProvider::class);
+                /** @var MiddlewaresServiceProvider $middlewaresProvider */
+                $middlewaresProvider = $container->get(MiddlewaresServiceProvider::class);
 
                 $middlewareQueue = [];
 

@@ -6,8 +6,9 @@ namespace Zorachka\Framework\Http\Router;
 
 use InvalidArgumentException;
 use Psr\Http\Server\RequestHandlerInterface;
+use Webmozart\Assert\Assert;
 
-final class Route
+final class Route implements RouteInterface
 {
     private const GET = 'GET';
     private const POST = 'POST';
@@ -16,18 +17,26 @@ final class Route
     private const DELETE = 'DELETE';
 
     private string $httpMethod;
-    private string $route;
+    private string $path;
     private string $handler;
 
     /**
      * @param string $httpMethod
-     * @param string $route
+     * @param string $path
      * @param class-string<RequestHandlerInterface> $handler
      */
-    private function __construct(string $httpMethod, string $route, string $handler)
+    private function __construct(string $httpMethod, string $path, string $handler)
     {
-        $this->httpMethod = $httpMethod;
-        $this->route = $route;
+        Assert::notEmpty($httpMethod);
+        Assert::inArray($httpMethod, [
+            self::GET,
+            self::POST,
+            self::PUT,
+            self::PATCH,
+            self::DELETE,
+        ]);
+        Assert::notEmpty($path);
+        Assert::notEmpty($handler);
         if (!is_a($handler, RequestHandlerInterface::class, true)) {
             throw new InvalidArgumentException(sprintf(
                 'Class "%s" was expected to implement "%s"',
@@ -35,13 +44,13 @@ final class Route
                 RequestHandlerInterface::class
             ));
         }
+        $this->httpMethod = $httpMethod;
+        $this->path = $path;
         $this->handler = $handler;
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function get(string $route, string $handler): self
     {
@@ -49,9 +58,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function post(string $route, string $handler): self
     {
@@ -59,9 +66,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function put(string $route, string $handler): self
     {
@@ -69,9 +74,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function patch(string $route, string $handler): self
     {
@@ -79,9 +82,7 @@ final class Route
     }
 
     /**
-     * @param string $route
-     * @param class-string<RequestHandlerInterface> $handler
-     * @return Route
+     * @inheritDoc
      */
     public static function delete(string $route, string $handler): self
     {
@@ -89,25 +90,25 @@ final class Route
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getHttpMethod(): string
+    public function httpMethod(): string
     {
         return $this->httpMethod;
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getRoute(): string
+    public function path(): string
     {
-        return $this->route;
+        return $this->path;
     }
 
     /**
-     * @return class-string
+     * @inheritDoc
      */
-    public function getHandler(): string
+    public function handler(): string
     {
         return $this->handler;
     }

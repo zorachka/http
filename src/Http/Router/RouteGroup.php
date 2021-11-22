@@ -4,41 +4,50 @@ declare(strict_types=1);
 
 namespace Zorachka\Framework\Http\Router;
 
-final class RouteGroup
+use Webmozart\Assert\Assert;
+
+final class RouteGroup implements RouteGroupInterface
 {
     private string $prefix;
     /**
-     * @var Route[]
+     * @var RouteInterface[]
      */
     private array $routes;
 
     /**
      * @param string $prefix
-     * @param Route[] $routes
+     * @param RouteInterface[] $routes
      */
     private function __construct(string $prefix, array $routes)
     {
+        Assert::notEmpty($prefix);
+        Assert::notEmpty($routes);
+        Assert::allIsInstanceOf($routes, RouteInterface::class);
+
         $this->prefix = $prefix;
         $this->routes = $routes;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function with(string $prefix, array $routes): self
     {
         return new self($prefix, $routes);
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    public function getPrefix(): string
+    public function prefix(): string
     {
         return $this->prefix;
     }
 
     /**
-     * @return Route[]
+     * @inheritDoc
      */
-    public function getRoutes(): array
+    public function routes(): array
     {
         return $this->routes;
     }
