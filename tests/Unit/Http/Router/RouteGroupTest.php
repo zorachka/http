@@ -2,33 +2,27 @@
 
 declare(strict_types=1);
 
+use Psr\Http\Server\MiddlewareInterface;
+use Zorachka\Framework\Http\Router\Route;
 use Zorachka\Framework\Http\Router\RouteGroup;
-use Zorachka\Framework\Http\Router\RouteInterface;
+use Zorachka\Framework\Http\Router\RoutesConfig;
 
 test('RouteGroup should throw exception if prefix is empty', function () {
-    RouteGroup::with('', [
-        mock(RouteInterface::class),
-    ]);
+    RouteGroup::withPrefix('', function (RoutesConfig $config) {});
 })->throws(InvalidArgumentException::class);
 
-test('RouteGroup should throw exception if routes is empty', function () {
-    RouteGroup::with('/prefix', [
-    ]);
-})->throws(InvalidArgumentException::class);
+test('RouteGroup should can be created with prefix', function () {
+    $group = RouteGroup::withPrefix('/prefix', function (RoutesConfig $config) {
+        return $config->withRoute(mock(Route::class));
+    });
 
-test('RouteGroup should throw exception if routes is not instance of Route', function () {
-    RouteGroup::with('/prefix', [
-        mock(RouteInterface::class),
-        mock(stdClass::class),
-    ]);
-})->throws(InvalidArgumentException::class);
+    expect($group->prefix())->toBe('/prefix');
+});
 
-test('RouteGroup should can be created with prefix and routes', function () {
-    $routes = [
-        mock(RouteInterface::class),
-    ];
-    $group = RouteGroup::with('prefix', $routes);
+test('RouteGroup should can be created with middleware', function () {
+    $group = RouteGroup::withPrefix('/prefix', function (RoutesConfig $config) {
+        return $config->withRoute(mock(Route::class));
+    })->withMiddleware(MiddlewareInterface::class);
 
-    expect($group->prefix())->toBe('prefix');
-    expect($group->routes())->toBe($routes);
-})->throws(InvalidArgumentException::class);
+    expect($group->middlewares())->toMatchArray([MiddlewareInterface::class]);
+});

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zorachka\Framework\Http\Router\Route;
 
@@ -20,6 +21,9 @@ test('Route::patch should throw exception if path is empty', function () {
 test('Route::delete should throw exception if path is empty', function () {
     Route::delete('', RequestHandlerInterface::class);
 })->throws(InvalidArgumentException::class);
+test('Route::head should throw exception if path is empty', function () {
+    Route::head('', RequestHandlerInterface::class);
+})->throws(InvalidArgumentException::class);
 
 test('Route::get should throw exception if handler is not RequestHandlerInterface::class', function () {
     Route::get('', stdClass::class);
@@ -36,39 +40,61 @@ test('Route::patch should throw exception if handler is not RequestHandlerInterf
 test('Route::delete should throw exception if handler is not RequestHandlerInterface::class', function () {
     Route::delete('', stdClass::class);
 })->throws(InvalidArgumentException::class);
+test('Route::head should throw exception if handler is not RequestHandlerInterface::class', function () {
+    Route::head('', stdClass::class);
+})->throws(InvalidArgumentException::class);
 
 test('Route::get should can be created with path and handler', function () {
-    $route = Route::get('/route', RequestHandlerInterface::class);
+    $route = Route::get('/route', RequestHandlerInterface::class)
+        ->withMiddleware(MiddlewareInterface::class);
 
     expect($route->httpMethod())->toBe('GET');
     expect($route->path())->toBe('/route');
     expect($route->handler())->toBe(RequestHandlerInterface::class);
+    expect($route->middlewares())->toMatchArray([MiddlewareInterface::class]);
 });
 test('Route::post should can be created with path and handler', function () {
-    $route = Route::post('/route', RequestHandlerInterface::class);
+    $route = Route::post('/route', RequestHandlerInterface::class)
+        ->withMiddleware(MiddlewareInterface::class);
 
     expect($route->httpMethod())->toBe('POST');
     expect($route->path())->toBe('/route');
     expect($route->handler())->toBe(RequestHandlerInterface::class);
+    expect($route->middlewares())->toMatchArray([MiddlewareInterface::class]);
 });
 test('Route::put should can be created with path and handler', function () {
-    $route = Route::put('/route', RequestHandlerInterface::class);
+    $route = Route::put('/route', RequestHandlerInterface::class)
+        ->withMiddleware(MiddlewareInterface::class);
 
     expect($route->httpMethod())->toBe('PUT');
     expect($route->path())->toBe('/route');
     expect($route->handler())->toBe(RequestHandlerInterface::class);
+    expect($route->middlewares())->toMatchArray([MiddlewareInterface::class]);
 });
 test('Route::patch should can be created with path and handler', function () {
-    $route = Route::patch('/route', RequestHandlerInterface::class);
+    $route = Route::patch('/route', RequestHandlerInterface::class)
+        ->withMiddleware(MiddlewareInterface::class);
 
     expect($route->httpMethod())->toBe('PATCH');
     expect($route->path())->toBe('/route');
     expect($route->handler())->toBe(RequestHandlerInterface::class);
+    expect($route->middlewares())->toMatchArray([MiddlewareInterface::class]);
 });
 test('Route::delete should can be created with path and handler', function () {
-    $route = Route::delete('/route', RequestHandlerInterface::class);
+    $route = Route::delete('/route', RequestHandlerInterface::class)
+        ->withMiddleware(MiddlewareInterface::class);
 
     expect($route->httpMethod())->toBe('DELETE');
     expect($route->path())->toBe('/route');
     expect($route->handler())->toBe(RequestHandlerInterface::class);
+    expect($route->middlewares())->toMatchArray([MiddlewareInterface::class]);
+});
+test('Route::head should can be created with path and handler', function () {
+    $route = Route::head('/route', RequestHandlerInterface::class)
+        ->withMiddleware(MiddlewareInterface::class);
+
+    expect($route->httpMethod())->toBe('HEAD');
+    expect($route->path())->toBe('/route');
+    expect($route->handler())->toBe(RequestHandlerInterface::class);
+    expect($route->middlewares())->toMatchArray([MiddlewareInterface::class]);
 });

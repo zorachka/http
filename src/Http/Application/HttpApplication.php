@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zorachka\Framework\Http;
+namespace Zorachka\Framework\Http\Application;
 
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
