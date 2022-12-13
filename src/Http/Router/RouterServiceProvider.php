@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Zorachka\Framework\Http\Router;
 
-use Zorachka\Framework\Container\ServiceProvider;
+use Zorachka\Container\ServiceProvider;
 
 final class RouterServiceProvider implements ServiceProvider
 {

@@ -11,7 +11,7 @@ use function FastRoute\simpleDispatcher;
 use Middlewares\FastRoute;
 use Middlewares\RequestHandler;
 use Relay\Relay;
-use Zorachka\Framework\Container\ServiceProvider;
+use Zorachka\Container\ServiceProvider;
 use Zorachka\Framework\Http\Application;
 use Zorachka\Framework\Http\HttpApplication;
 use Zorachka\Framework\Http\Middleware\MiddlewaresServiceProvider;

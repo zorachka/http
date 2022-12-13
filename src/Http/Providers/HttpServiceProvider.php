@@ -9,7 +9,7 @@ use Narrowspark\HttpEmitter\SapiEmitter;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Zorachka\Framework\Http\Emitter\Emitter;
 use Zorachka\Framework\Http\Emitter\NarrowsparkEmitter;
-use Zorachka\Framework\Container\ServiceProvider;
+use Zorachka\Container\ServiceProvider;
 use Zorachka\Framework\Http\Response\LaminasResponseFactory;
 use Zorachka\Framework\Http\Response\ResponseFactory;
 
