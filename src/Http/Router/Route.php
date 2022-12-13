@@ -37,13 +37,6 @@ final class Route implements RouteInterface
         ]);
         Assert::notEmpty($path);
         Assert::notEmpty($handler);
-        if (!is_a($handler, RequestHandlerInterface::class, true)) {
-            throw new InvalidArgumentException(sprintf(
-                'Class "%s" was expected to implement "%s"',
-                $handler,
-                RequestHandlerInterface::class
-            ));
-        }
         $this->httpMethod = $httpMethod;
         $this->path = $path;
         $this->handler = $handler;

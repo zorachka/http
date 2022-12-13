@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Zorachka\Framework\Http\Providers;
 
+use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use FastRoute\RouteCollector;
+use Psr\Http\Server\RequestHandlerInterface;
 use function FastRoute\simpleDispatcher;
 use Middlewares\FastRoute;
 use Middlewares\RequestHandler;
@@ -33,6 +35,14 @@ final class HttpApplicationServiceProvider implements ServiceProvider
                     $routes = $routerConfig->routes();
 
                     foreach ($routes as $route) {
+                        if (!is_a($route->handler(), RequestHandlerInterface::class, true)) {
+                            throw new InvalidArgumentException(sprintf(
+                                'Class "%s" was expected to implement "%s"',
+                                $route->handler(),
+                                RequestHandlerInterface::class
+                            ));
+                        }
+
                         $collector->addRoute(
                             $route->httpMethod(),
                             $route->path(),
@@ -49,6 +59,14 @@ final class HttpApplicationServiceProvider implements ServiceProvider
                             $prefix,
                             function (RouteCollector $collector) use ($routes) {
                                 foreach ($routes as $route) {
+                                    if (!is_a($route->handler(), RequestHandlerInterface::class, true)) {
+                                        throw new InvalidArgumentException(sprintf(
+                                            'Class "%s" was expected to implement "%s"',
+                                            $route->handler(),
+                                            RequestHandlerInterface::class
+                                        ));
+                                    }
+
                                     $collector->addRoute(
                                         $route->httpMethod(),
                                         $route->path(),
