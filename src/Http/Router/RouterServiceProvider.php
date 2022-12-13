@@ -14,7 +14,7 @@ final class RouterServiceProvider implements ServiceProvider
     public static function getDefinitions(): array
     {
         return [
-            RouterConfig::class => fn() => RouterConfig::withDefaults(),
+            RouterConfig::class => static fn() => RouterConfig::withDefaults(),
         ];
     }
 

@@ -21,9 +21,9 @@ final class HttpServiceProvider implements ServiceProvider
     public static function getDefinitions(): array
     {
         return [
-            ServerRequestFactoryInterface::class => fn() => new ServerRequestFactory,
-            Emitter::class => fn() => new NarrowsparkEmitter(new SapiEmitter),
-            ResponseFactory::class => fn() => new LaminasResponseFactory,
+            ServerRequestFactoryInterface::class => static fn() => new ServerRequestFactory,
+            Emitter::class => static fn() => new NarrowsparkEmitter(new SapiEmitter),
+            ResponseFactory::class => static fn() => new LaminasResponseFactory,
         ];
     }
 
