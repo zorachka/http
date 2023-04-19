@@ -30,7 +30,7 @@ final class Route
     /**
      * @param class-string<RequestHandlerInterface> $handler
      */
-    private function __construct(string $httpMethod, string $path, string $handler)
+    private function __construct(string $httpMethod, string $path, string $handler, ?string $name = null)
     {
         Assert::stringNotEmpty($httpMethod);
         Assert::inArray($httpMethod, [
@@ -47,9 +47,14 @@ final class Route
             throw new InvalidArgumentException(\sprintf('Class %s must implements Psr\Http\Server\RequestHandlerInterface', $handler));
         }
 
+        if ($name !== null) {
+            Assert::stringNotEmpty($name);
+        }
+
         $this->httpMethod = $httpMethod;
         $this->path = $path;
         $this->handler = $handler;
+        $this->name = $name;
     }
 
     /**
@@ -57,9 +62,9 @@ final class Route
      * @param class-string<RequestHandlerInterface> $handler
      * @return static
      */
-    public static function get(string $route, string $handler): self
+    public static function get(string $route, string $handler, ?string $name = null): self
     {
-        return new self(self::GET, $route, $handler);
+        return new self(self::GET, $route, $handler, $name);
     }
 
     /**
@@ -67,7 +72,7 @@ final class Route
      * @param class-string<RequestHandlerInterface> $handler
      * @return static
      */
-    public static function post(string $route, string $handler): self
+    public static function post(string $route, string $handler, ?string $name = null): self
     {
         return new self(self::POST, $route, $handler);
     }
@@ -77,7 +82,7 @@ final class Route
      * @param class-string<RequestHandlerInterface> $handler
      * @return static
      */
-    public static function put(string $route, string $handler): self
+    public static function put(string $route, string $handler, ?string $name = null): self
     {
         return new self(self::PUT, $route, $handler);
     }
@@ -87,7 +92,7 @@ final class Route
      * @param class-string<RequestHandlerInterface> $handler
      * @return static
      */
-    public static function patch(string $route, string $handler): self
+    public static function patch(string $route, string $handler, ?string $name = null): self
     {
         return new self(self::PATCH, $route, $handler);
     }
@@ -97,7 +102,7 @@ final class Route
      * @param class-string<RequestHandlerInterface> $handler
      * @return static
      */
-    public static function delete(string $route, string $handler): self
+    public static function delete(string $route, string $handler, ?string $name = null): self
     {
         return new self(self::DELETE, $route, $handler);
     }
