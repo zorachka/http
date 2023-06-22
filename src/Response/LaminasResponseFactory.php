@@ -15,9 +15,9 @@ final class LaminasResponseFactory implements ResponseFactory
     /**
      * @param array<string, string> $headers
      */
-    public static function redirect($uri, int $status = 302, array $headers = []): ResponseInterface
+    public static function redirect($uri, Status $status = Status::HTTP_FOUND, array $headers = []): ResponseInterface
     {
-        return new RedirectResponse($uri, $status, $headers);
+        return new RedirectResponse($uri, $status->value, $headers);
     }
 
     /**
@@ -25,26 +25,26 @@ final class LaminasResponseFactory implements ResponseFactory
      */
     public static function json(
         $data,
-        int $status = 200,
+        Status $status = Status::HTTP_OK,
         array $headers = [],
         int $encodingOptions = self::DEFAULT_JSON_FLAGS
     ): ResponseInterface {
-        return new JsonResponse($data, $status, $headers, $encodingOptions);
+        return new JsonResponse($data, $status->value, $headers, $encodingOptions);
     }
 
     /**
      * @param array<string, string> $headers
      */
-    public static function empty(int $status = 204, array $headers = []): ResponseInterface
+    public static function empty(Status $status = Status::HTTP_NO_CONTENT, array $headers = []): ResponseInterface
     {
-        return new EmptyResponse($status, $headers);
+        return new EmptyResponse($status->value, $headers);
     }
 
     /**
      * @param array<string, string> $headers
      */
-    public static function html($html, int $status = 200, array $headers = []): ResponseInterface
+    public static function html($html, Status $status = Status::HTTP_OK, array $headers = []): ResponseInterface
     {
-        return new HtmlResponse($html, $status, $headers);
+        return new HtmlResponse($html, $status->value, $headers);
     }
 }
