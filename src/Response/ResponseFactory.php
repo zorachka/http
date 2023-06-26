@@ -31,10 +31,10 @@ interface ResponseFactory
      * Note: this method overwrites the `location` $headers value.
      *
      * @param string|UriInterface $uri URI for the Location header.
-     * @param Status $status Status code for the redirect; 302 by default.
+     * @param StatusCode $statusCode Status code for the redirect; 302 by default.
      * @param array<string, string> $headers Array of headers to use at initialization.
      */
-    public static function redirect(string|UriInterface $uri, Status $status = Status::HTTP_FOUND, array $headers = []): ResponseInterface;
+    public static function redirect(string|UriInterface $uri, StatusCode $statusCode = StatusCode::HTTP_FOUND, array $headers = []): ResponseInterface;
 
     /**
      * Create a JSON response with the given data.
@@ -49,25 +49,25 @@ interface ResponseFactory
      * - JSON_UNESCAPED_SLASHES
      *
      * @param mixed $data Data to convert to JSON.
-     * @param Status $status Status code for the response; 200 by default.
+     * @param StatusCode $statusCode Status code for the response; 200 by default.
      * @param array<string, string> $headers Array of headers to use at initialization.
      * @param int $encodingOptions JSON encoding options to use.
      * @throws InvalidArgumentException if unable to encode the $data to JSON.
      */
     public static function json(
-        mixed $data,
-        Status $status = Status::HTTP_OK,
-        array $headers = [],
-        int $encodingOptions = self::DEFAULT_JSON_FLAGS
+        mixed      $data,
+        StatusCode $statusCode = StatusCode::HTTP_OK,
+        array      $headers = [],
+        int        $encodingOptions = self::DEFAULT_JSON_FLAGS
     ): ResponseInterface;
 
     /**
      * Create an empty response with the given status code.
      *
-     * @param Status $status Status code for the response, if any.
+     * @param StatusCode $statusCode Status code for the response, if any.
      * @param array<string, string> $headers Headers for the response, if any.
      */
-    public static function empty(Status $status = Status::HTTP_NO_CONTENT, array $headers = []): ResponseInterface;
+    public static function empty(StatusCode $statusCode = StatusCode::HTTP_NO_CONTENT, array $headers = []): ResponseInterface;
 
     /**
      * Create an HTML response.
@@ -76,9 +76,9 @@ interface ResponseFactory
      * status of 200.
      *
      * @param StreamInterface|string $html HTML or stream for the message body.
-     * @param Status $status Status code for the response; 200 by default.
+     * @param StatusCode $statusCode Status code for the response; 200 by default.
      * @param array<string, string> $headers Array of headers to use at initialization.
      * @throws InvalidArgumentException if $html is neither a string or stream.
      */
-    public static function html(string|StreamInterface $html, Status $status = Status::HTTP_OK, array $headers = []): ResponseInterface;
+    public static function html(string|StreamInterface $html, StatusCode $statusCode = StatusCode::HTTP_OK, array $headers = []): ResponseInterface;
 }

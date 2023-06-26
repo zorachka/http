@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Zorachka\Http\Response;
 
-enum Status: int
+enum StatusCode: int
 {
     case HTTP_CONTINUE = 100;
     case HTTP_SWITCHING_PROTOCOLS = 101;
