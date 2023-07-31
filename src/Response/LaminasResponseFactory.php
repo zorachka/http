@@ -24,7 +24,7 @@ final class LaminasResponseFactory implements ResponseFactory
      * @param array<string, string> $headers
      */
     public static function json(
-                   $data,
+        $data,
         StatusCode $statusCode = StatusCode::HTTP_OK,
         array      $headers = [],
         int        $encodingOptions = self::DEFAULT_JSON_FLAGS

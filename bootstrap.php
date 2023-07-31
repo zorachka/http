@@ -40,7 +40,7 @@ final class HomePageAction implements RequestHandlerInterface
 final class ApplicationServiceProvider implements ServiceProvider
 {
     /**
-     * @inheritDoc
+     *
      */
     public static function getDefinitions(): array
     {
@@ -48,7 +48,7 @@ final class ApplicationServiceProvider implements ServiceProvider
     }
 
     /**
-     * @inheritDoc
+     *
      */
     public static function getExtensions(): array
     {
@@ -64,7 +64,8 @@ final class ApplicationServiceProvider implements ServiceProvider
 }
 
 return static function (): ContainerInterface {
-    return (new ContainerFactory())->build([
+    return (new ContainerFactory())->build(
+        [
             HttpServiceProvider::class,
             ApplicationServiceProvider::class,
         ]
